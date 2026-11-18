@@ -73,3 +73,13 @@ td,th{border:2px solid #999;padding:4px 8px;text-align:center}
 .brand{position:absolute;right:12px;top:10px;z-index:5;display:flex;align-items:center;justify-content:flex-end;width:76px;max-width:76px;min-height:0}
 .brand img{max-width:100%;max-height:40px;object-fit:contain}.brand .brand-fallback{font-size:14px;font-weight:900;letter-spacing:.03em;color:#4c6688}
 @media(max-width:650px){.refkeywords{grid-template-columns:repeat(2,1fr)}.brand{right:8px;top:5px;width:56px;max-width:56px}.brand .brand-fallback{font-size:11px}h1{padding-top:32px}}
+
+/* YANYU725 logo: explicit image sizing */
+.brand{width:60px!important;max-width:60px!important;min-height:0!important}
+.brand img{display:block!important;width:60px!important;max-width:100%!important;height:auto!important;max-height:none!important}
+@media(max-width:650px){.brand{width:48px!important;max-width:48px!important}.brand img{width:48px!important}}
+
+/* verified version */
+.version-note{text-align:center;font-size:13px;color:#666;margin:0 0 8px}
+.refkeywords strong{font-size:19px}.refkeywords small{font-size:14px}
+.codeblock{clip-path:none!important;clip-path:polygon(0 0,12% 0,16% 8%,30% 8%,34% 0,100% 0,100% 100%,34% 100%,30% 92%,16% 92%,12% 100%,0 100%)!important}

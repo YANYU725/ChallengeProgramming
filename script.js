@@ -45,7 +45,7 @@ function solvable(s){const m=s.m,C=m[0].length,ps=[];let st;
 /* ---- 画面 ---- */
 function show(){({top:scrTop,choose:scrChoose,play:scrPlay,reflect:scrReflect,rec:scrRec})[S.scr]()}
 function scrTop(){
- A.innerHTML=`<h1>🚗 challenge programming</h1>
+ A.innerHTML=`<h1>🚗 challenge programming</h1><p class="version-note">教材改訂版 2026.11.19</p>
  <div class="card" style="max-width:520px;margin:12px auto"><div class="ic">🚗 ➡ 🏁</div><h2>みんなで やろう！</h2><p>ビートルを まっすぐ うごかそう ${done('beetle-c')?'✔':''}</p><button class="p" data-a="go" data-i="beetle" data-s="c">はじめる</button></div>
  <div class="row"><button class="g" data-a="scr" data-v="choose">じゆうに えらぶ ▶</button><button data-a="scr" data-v="rec">せんせい</button></div>`}
 function scrChoose(){
@@ -121,7 +121,7 @@ const REFKEY=[['🚩 お題','なにを する？'],['🧩 手順','どうやっ
 const FLOW='🚩 お題をたしかめる → 🧩 手順をかんがえる → ▶ 実行する → 🔧 うまくいかなければ修正する → ▶ もういちど実行する';
 function scrReflect(){const R=S.rf;
  if(R.done){A.innerHTML=`<h1>📝 ありがとう！</h1><div class="box ok">さいごまで こたえて くれて ありがとう。<br>じぶんで ためして みたことが すばらしいよ！</div><div class="box">${FLOW}</div><div class="row"><button class="g" data-a="scr" data-v="choose">もういちど ちょうせん</button><button data-a="scr" data-v="top">トップへ</button></div>`;return}
- A.innerHTML=`<h1>📝 ふりかえり</h1>`+RQ.map((q,i)=>`<div class="box"><div class="reflect-key"><strong>${RKEY[i][0]} ${RKEY[i][1]}</strong><span>${RKEY[i][2]}</span></div><div class="reflect-question">${q[1]}</div><div class="opt">${q[2].map((o,j)=>`<button class="${R.a[i]===j?'sel':''}" data-a="ans" data-q="${i}" data-v="${j}">${o}</button>`).join('')}</div></div>`).join('')+
+ A.innerHTML=`<h1>📝 ふりかえり</h1><div class="refkeywords">${RKEY.map(k=>`<div><strong>${k[0]} ${k[1]}</strong><small>${k[2]}</small></div>`).join('')}</div>`+RQ.map((q,i)=>`<div class="box"><div class="reflect-key"><strong>${RKEY[i][0]} ${RKEY[i][1]}</strong><span>${RKEY[i][2]}</span></div><div class="reflect-question">${q[1]}</div><div class="opt">${q[2].map((o,j)=>`<button class="${R.a[i]===j?'sel':''}" data-a="ans" data-q="${i}" data-v="${j}">${o}</button>`).join('')}</div></div>`).join('')+
  `<div class="row"><button data-a="scr" data-v="choose">◀ もどる</button><button class="g" data-a="rdone" ${R.a.filter(x=>x!=null).length<4?'disabled':''}>おわり</button></div>`}
 
 /* ---- 記録 ---- */
