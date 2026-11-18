@@ -45,7 +45,7 @@ function solvable(s){const m=s.m,C=m[0].length,ps=[];let st;
 /* ---- 画面 ---- */
 function show(){({top:scrTop,choose:scrChoose,play:scrPlay,reflect:scrReflect,rec:scrRec})[S.scr]()}
 function scrTop(){
- A.innerHTML=`<h1>🚗 challenge programming</h1><p class="version-note">教材改訂版 2026.11.19</p>
+ A.innerHTML=`<h1>🚗 challenge programming</h1><p class="version-note">教材改訂版 2026.11.19 ・ ブロック改良版</p>
  <div class="card" style="max-width:520px;margin:12px auto"><div class="ic">🚗 ➡ 🏁</div><h2>みんなで やろう！</h2><p>ビートルを まっすぐ うごかそう ${done('beetle-c')?'✔':''}</p><button class="p" data-a="go" data-i="beetle" data-s="c">はじめる</button></div>
  <div class="row"><button class="g" data-a="scr" data-v="choose">じゆうに えらぶ ▶</button><button data-a="scr" data-v="rec">せんせい</button></div>`}
 function scrChoose(){
@@ -61,7 +61,7 @@ function dSteps(){$('#steps').innerHTML=[['task','🚩 お題'],['build','🧩 �
 function dPal(){$('#pal').innerHTML=ACT[S.act].b.map(b=>`<button class="codeblock ${blockKind(b)}" data-a="add" data-v="${b}" ${S.running?'disabled':''}>${BL[b]}</button>`).join('')}
 const blockKind=b=>['F','R','L'].includes(b)?'move':b[0]=='w'?'time':['red','yellow','blue'].includes(b)?'signalblock':'displayblock';
 function dProg(){const d=S.running?'disabled':'';
- $('#prog').innerHTML=S.prog.length?S.prog.map((b,i)=>`<div class="item ${blockKind(b)}${S.cur==i?' cur':''}"><span>${i+1}</span><span class="lb">${BL[b]}${S.cur==i?' ◀じっこうちゅう':''}</span><button data-a="up" data-i="${i}" ${d}>▲</button><button data-a="dn" data-i="${i}" ${d}>▼</button><button class="r" data-a="del" data-i="${i}" ${d}>✕</button></div>`).join(''):'<div class="empty">うえの ブロックを おして ここに ならべよう</div>'}
+ $('#prog').innerHTML=S.prog.length?S.prog.map((b,i)=>`<div class="program-row${S.cur==i?' cur':''}"><div class="stack-block ${blockKind(b)}"><span class="block-number">${i+1}</span><span class="lb">${BL[b]}${S.cur==i?' ◀じっこうちゅう':''}</span></div><div class="block-actions"><button data-a="up" data-i="${i}" ${d} aria-label="上に移動">▲</button><button data-a="dn" data-i="${i}" ${d} aria-label="下に移動">▼</button><button class="r" data-a="del" data-i="${i}" ${d} aria-label="削除">✕</button></div></div>`).join(''):'<div class="empty">うえの ブロックを おして ここに ならべよう</div>'}
 function dMsg(){$('#msg').innerHTML=S.ok?`<div class="box ok">🎉 せいかい！ よくできたね！<div class="row"><button class="g" data-a="next">${S.st=='c'||S.st==2?'えらぶ がめんへ ▶':'つぎの ステージへ ▶'}</button><button data-a="again">もういちど みる</button>${S.st=='c'?'':'<button data-a="scr" data-v="reflect">📝 ふりかえり</button>'}</div></div>`:S.msg?`<div class="box">${S.msg}</div>`:''}
 function dCtl(){const d=S.running?'disabled':'';$('#ctl').innerHTML=`<button class="g" data-a="run" ${d}>▶ じっこう</button><button class="r" data-a="stop" ${S.running?'':'disabled'}>■ とめる</button><button data-a="clr" ${d}>🗑 ぜんぶ けす</button><button class="p" data-a="hint" ${d}>💡 ヒント</button>`}
 function dStage(){const e=$('#stage');
