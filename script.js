@@ -6,11 +6,11 @@ const PAT={heart:['.#.#.','#####','#####','.###.','..#..'].join(''),smile:['.#.#
 const CAR='<svg viewBox="0 0 100 100"><rect x="22" y="18" width="14" height="12" rx="4" fill="#222"/><rect x="62" y="18" width="14" height="12" rx="4" fill="#222"/><rect x="22" y="70" width="14" height="12" rx="4" fill="#222"/><rect x="62" y="70" width="14" height="12" rx="4" fill="#222"/><rect x="10" y="26" width="80" height="48" rx="24" fill="#ffd400" stroke="#333" stroke-width="3"/><rect x="52" y="33" width="14" height="34" rx="6" fill="#7fb8ee"/><rect x="26" y="35" width="12" height="30" rx="5" fill="#7fb8ee"/><circle cx="86" cy="36" r="5" fill="#fff" stroke="#333"/><circle cx="86" cy="64" r="5" fill="#fff" stroke="#333"/></svg>';
 const ACT={
 beetle:{n:'きいろい ビートルを うごかそう！',ic:'🚗',b:['F','R','L'],
- c:{t:'ビートルを 3マス すすめて、ゴールへ いこう！',m:['S..G'],d:1,h:['ゴールまで なんマスか かぞえてみよう','「すすむ」ブロックを つかうよ','「すすむ」を 3かい ならべよう']},
+ c:{t:'ビートルを 2マス すすめて、ゴールへ いこう！',m:['S.G'],d:1,h:['ゴールまで なんマスか かぞえてみよう','「すすむ」ブロックを つかうよ','「すすむ」を 2かい ならべよう']},
  st:[
- {t:'まがって ゴールへ いこう！',m:['...G','....','S...'],d:1,h:['ゴールは どっちに あるかな？ まがる ばしょを みつけよう','「すすむ」と「ひだりを むく」を つかうよ','すすむ 3かい → ひだりを むく → すすむ 2かい']},
- {t:'ほしを とおって、ゴールへ いこう！',m:['....','..PG','....','S...'],d:1,h:['ほし⭐を とおって ゴールへ いくよ。まがるのは 2かい','「ひだり」と「みぎ」を 1かいずつ つかうよ','すすむ 2 → ひだり → すすむ 2 → みぎ → すすむ 1']},
- {t:'いわを よけて、ゴールへ いこう！',m:['..#.G','.#...','...#.','.#...','S..#.'],d:1,h:['いわ🪨の ないところを とおろう。ぶつかったら ブロックを なおそう','うえに すすんで、みぎに まがって、また うえに いくよ','すすむ 2 → ひだり → すすむ 3 → みぎ → すすむ 2 → ひだり → すすむ 1']}]},
+ {t:'まがって ゴールへ いこう！',m:['..G','S..'],d:1,h:['ゴールは どっちかな？','「すすむ」と「ひだりを むく」を つかうよ','すすむ 2かい → ひだり → すすむ 1かい']},
+ {t:'ほしを とおって、ゴールへ いこう！',m:['..G','.P.','S..'],d:1,h:['ほし⭐を とおって ゴールへ いこう','みぎと ひだりに まがるよ','すすむ 1 → ひだり → すすむ 1 → みぎ → すすむ 1 → ひだり → すすむ 1']},
+ {t:'いわを よけて、ゴールへ いこう！',m:['...G','.#..','....','S...'],d:1,h:['いわ🪨を よけて ゴールへ いこう','はじめは みぎに すすもう','すすむ 2 → ひだり → すすむ 3 → みぎ → すすむ 1']} ]},
 signal:{n:'しんごうきを うごかそう！',ic:'🚦',b:['red','yellow','blue','w1','w3'],st:[
  {t:'あかしんごうを つけよう！',g:[{v:'red'}],h:['あかい ランプを つけるよ','「あかを つける」を つかうよ','「あかを つける」を 1こ ならべよう']},
  {t:'あお → き → あか の じゅんに ひからせよう！',g:[{v:'blue'},{v:'yellow'},{v:'red'}],h:['いろの じゅんばんを たしかめよう','3つの いろの ブロックを 1こずつ つかうよ','あお → きいろ → あか の じゅんに ならべよう']},
@@ -58,9 +58,10 @@ function scrPlay(){
  <div id="msg"></div><div class="ctl" id="ctl"></div>`;dAll()}
 function dAll(){if(S.scr!='play'||!$('#stage'))return;dSteps();dStage();dPal();dProg();dMsg();dCtl()}
 function dSteps(){$('#steps').innerHTML=[['task','🚩 お題'],['build','🧩 手順'],['run','▶ 実行'],['fix','🔧 修正']].map(([k,t])=>`<span class="${S.step==k?'on':''}">${t}</span>${k=='fix'?'':'→'}`).join('')}
-function dPal(){$('#pal').innerHTML=ACT[S.act].b.map(b=>`<button data-a="add" data-v="${b}" ${S.running?'disabled':''}>${BL[b]}</button>`).join('')}
+function dPal(){$('#pal').innerHTML=ACT[S.act].b.map(b=>`<button class="codeblock ${blockKind(b)}" data-a="add" data-v="${b}" ${S.running?'disabled':''}>${BL[b]}</button>`).join('')}
+const blockKind=b=>['F','R','L'].includes(b)?'move':b[0]=='w'?'time':['red','yellow','blue'].includes(b)?'signalblock':'displayblock';
 function dProg(){const d=S.running?'disabled':'';
- $('#prog').innerHTML=S.prog.length?S.prog.map((b,i)=>`<div class="item${S.cur==i?' cur':''}"><span>${i+1}</span><span class="lb">${BL[b]}${S.cur==i?' ◀じっこうちゅう':''}</span><button data-a="up" data-i="${i}" ${d}>▲</button><button data-a="dn" data-i="${i}" ${d}>▼</button><button class="r" data-a="del" data-i="${i}" ${d}>✕</button></div>`).join(''):'<div class="empty">うえの ブロックを おして ここに ならべよう</div>'}
+ $('#prog').innerHTML=S.prog.length?S.prog.map((b,i)=>`<div class="item ${blockKind(b)}${S.cur==i?' cur':''}"><span>${i+1}</span><span class="lb">${BL[b]}${S.cur==i?' ◀じっこうちゅう':''}</span><button data-a="up" data-i="${i}" ${d}>▲</button><button data-a="dn" data-i="${i}" ${d}>▼</button><button class="r" data-a="del" data-i="${i}" ${d}>✕</button></div>`).join(''):'<div class="empty">うえの ブロックを おして ここに ならべよう</div>'}
 function dMsg(){$('#msg').innerHTML=S.ok?`<div class="box ok">🎉 せいかい！ よくできたね！<div class="row"><button class="g" data-a="next">${S.st=='c'||S.st==2?'えらぶ がめんへ ▶':'つぎの ステージへ ▶'}</button><button data-a="again">もういちど みる</button>${S.st=='c'?'':'<button data-a="scr" data-v="reflect">📝 ふりかえり</button>'}</div></div>`:S.msg?`<div class="box">${S.msg}</div>`:''}
 function dCtl(){const d=S.running?'disabled':'';$('#ctl').innerHTML=`<button class="g" data-a="run" ${d}>▶ じっこう</button><button class="r" data-a="stop" ${S.running?'':'disabled'}>■ とめる</button><button data-a="clr" ${d}>🗑 ぜんぶ けす</button><button class="p" data-a="hint" ${d}>💡 ヒント</button>`}
 function dStage(){const e=$('#stage');
@@ -115,10 +116,12 @@ async function run(){
 
 /* ---- ふりかえり ---- */
 const RQ=[['お題','なにを するのか わかった？',['わかった','ヒントで わかった','むずかしかった']],['手順','ブロックの じゅんばんを かんがえた？',['じぶんで かんがえた','ヒントを もらった','むずかしかった']],['実行','うごかして、けっかを たしかめた？',['たしかめた','いっしょに たしかめた','まだ できなかった']],['修正','うまく いかないとき、なおしてみた？',['じぶんで なおした','ヒントで なおした','なおす ひつようが なかった','むずかしかった']]];
+const RKEY=[['🚩','お題','なにをする？'],['🧩','手順','どうやってする？'],['▶','実行','やってみよう！'],['🔧','修正','なおしてみよう！']];
+const REFKEY=[['🚩 お題','なにを する？'],['🧩 手順','どうやって する？'],['▶ 実行','やってみよう！'],['🔧 修正','なおしてみよう！']];
 const FLOW='🚩 お題をたしかめる → 🧩 手順をかんがえる → ▶ 実行する → 🔧 うまくいかなければ修正する → ▶ もういちど実行する';
 function scrReflect(){const R=S.rf;
  if(R.done){A.innerHTML=`<h1>📝 ありがとう！</h1><div class="box ok">さいごまで こたえて くれて ありがとう。<br>じぶんで ためして みたことが すばらしいよ！</div><div class="box">${FLOW}</div><div class="row"><button class="g" data-a="scr" data-v="choose">もういちど ちょうせん</button><button data-a="scr" data-v="top">トップへ</button></div>`;return}
- A.innerHTML=`<h1>📝 ふりかえり</h1>`+RQ.map((q,i)=>`<div class="box">${['🚩','🧩','▶','🔧'][i]} ${q[1]}<div class="opt">${q[2].map((o,j)=>`<button class="${R.a[i]===j?'sel':''}" data-a="ans" data-q="${i}" data-v="${j}">${o}</button>`).join('')}</div></div>`).join('')+
+ A.innerHTML=`<h1>📝 ふりかえり</h1>`+RQ.map((q,i)=>`<div class="box"><div class="reflect-key"><strong>${RKEY[i][0]} ${RKEY[i][1]}</strong><span>${RKEY[i][2]}</span></div><div class="reflect-question">${q[1]}</div><div class="opt">${q[2].map((o,j)=>`<button class="${R.a[i]===j?'sel':''}" data-a="ans" data-q="${i}" data-v="${j}">${o}</button>`).join('')}</div></div>`).join('')+
  `<div class="row"><button data-a="scr" data-v="choose">◀ もどる</button><button class="g" data-a="rdone" ${R.a.filter(x=>x!=null).length<4?'disabled':''}>おわり</button></div>`}
 
 /* ---- 記録 ---- */
