@@ -70,6 +70,6 @@ td,th{border:2px solid #999;padding:4px 8px;text-align:center}
 .refkeywords>div{background:#fff;border:2px solid #ffb300;border-radius:12px;padding:9px 5px;text-align:center}
 .refkeywords strong,.refkeywords small{display:block}.refkeywords small{font-size:15px}
 .refheading{font-size:23px;color:#a14c00;margin-bottom:5px}
-.brand{position:absolute;right:12px;top:10px;z-index:5;display:flex;align-items:center;justify-content:flex-end;max-width:130px;min-height:35px}
-.brand img{max-width:100%;max-height:48px;object-fit:contain}.brand .brand-fallback{font-size:14px;font-weight:900;letter-spacing:.03em;color:#4c6688}
-@media(max-width:650px){.refkeywords{grid-template-columns:repeat(2,1fr)}.brand{right:8px;top:5px;max-width:90px}.brand .brand-fallback{font-size:11px}h1{padding-top:32px}}
+.brand{position:absolute;right:12px;top:10px;z-index:5;display:flex;align-items:center;justify-content:flex-end;width:76px;max-width:76px;min-height:0}
+.brand img{max-width:100%;max-height:40px;object-fit:contain}.brand .brand-fallback{font-size:14px;font-weight:900;letter-spacing:.03em;color:#4c6688}
+@media(max-width:650px){.refkeywords{grid-template-columns:repeat(2,1fr)}.brand{right:8px;top:5px;width:56px;max-width:56px}.brand .brand-fallback{font-size:11px}h1{padding-top:32px}}
