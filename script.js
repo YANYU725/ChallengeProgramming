@@ -43,11 +43,11 @@ function solvable(s){const m=s.m,C=m[0].length,ps=[];let st;
 [ACT.beetle.c,...ACT.beetle.st].forEach((s,i)=>solvable(s)||console.warn('解答なしのマップ:',i));
 
 /* ---- 画面 ---- */
-function show(){({top:scrTop,choose:scrChoose,play:scrPlay,reflect:scrReflect,rec:scrRec})[S.scr]()}
+function show(){({top:scrTop,choose:scrChoose,play:scrPlay,reflect:scrReflect,rec:scrRec})[S.scr]();const nav=document.querySelector('#site-nav');if(nav)nav.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===S.scr));}
 function scrTop(){
- A.innerHTML=`<h1>🚗 challenge programming</h1><p class="version-note">教材改訂版 2026.11.19 ・ ブロック改良版</p>
- <div class="card" style="max-width:520px;margin:12px auto"><div class="ic">🚗 ➡ 🏁</div><h2>みんなで やろう！</h2><p>ビートルを まっすぐ うごかそう ${done('beetle-c')?'✔':''}</p><button class="p" data-a="go" data-i="beetle" data-s="c">はじめる</button></div>
- <div class="row"><button class="g" data-a="scr" data-v="choose">じゆうに えらぶ ▶</button><button data-a="scr" data-v="rec">せんせい</button></div>`}
+ A.innerHTML=`<div class="hero-intro"><div class="hero-kicker">🚙 たのしく まなぶ プログラミング</div><h1>challenge programming</h1><h2>クルマを ゴールまで うごかそう！</h2><p>ブロックを くみあわせて、じぶんの プログラムを つくろう。</p></div>
+ <section class="hero-card"><div class="hero-route"><div class="hero-icon hero-car">🚙</div><div class="hero-track"><span>●</span><span>●</span><span>●</span><span>➜</span></div><div class="hero-icon hero-goal">🏁</div></div><div class="hero-flow"><span>🚩 お題</span><span>🧩 手順</span><span>▶ 実行</span><span>🔧 修正</span></div><p class="hero-prompt">まずは ビートルを まっすぐ うごかしてみよう！ ${done('beetle-c')?'✔':''}</p><button class="primary-action" data-a="go" data-i="beetle" data-s="c">はじめる　→</button></section>
+ <div class="home-actions"><button class="secondary-action" data-a="scr" data-v="choose">▦　じゆうに えらぶ</button><button class="secondary-action" data-a="scr" data-v="rec">⚙　せんせい</button></div>`}
 function scrChoose(){
  A.innerHTML=`<h1>すきな ものを えらぼう！</h1><div class="cards">`+Object.keys(ACT).map(k=>`<div class="card"><div class="ic">${ACT[k].ic}</div><h2>${ACT[k].n}</h2><div class="row">${[0,1,2].map(i=>`<button class="p" data-a="go" data-i="${k}" data-s="${i}">${i+1} ${LAB[i]}${done(k+'-'+i)?' ✔':''}</button>`).join('')}</div></div>`).join('')+`</div>
  <div class="row"><button data-a="scr" data-v="top">◀ もどる</button><button class="g" data-a="scr" data-v="reflect">📝 ふりかえり</button></div>`}
@@ -133,7 +133,7 @@ function csv(){const q=v=>'"'+String(v).replace(/"/g,'""')+'"',L=[['教材','ス
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+L.join('\r\n')],{type:'text/csv'}));a.download='challenge_programming.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000)}
 
 /* ---- イベント ---- */
-A.onclick=e=>{const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const d=b.dataset,i=+d.i;
+document.onclick=e=>{const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const d=b.dataset,i=+d.i;
  switch(d.a){
  case 'scr':stopRun();S.running=false;if(d.v=='reflect')S.rf={a:[]};S.scr=d.v;show();break;
  case 'go':go(d.i,d.s=='c'?'c':+d.s);break;
